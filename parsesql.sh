@@ -34,13 +34,10 @@ do
 	url=$(grep '<URL>' $i | cut -d'>' -f2)
 	echo "Parsing $i"
 	
-	sed -i '/img src/d' $i
-	#echo ""
+	# Get rid of scraping leftovers
+	sed -i '/img src/d' $i 
 	sed -i '/div class=/d' $i
 
-	
-	#echo "INSERT INTO $table VALUES($hotel_id, $ovr_rating, $avg_price, '$url', $authorid ,'$1', '$3', '$5', $7, $9, $11, $13, $15, $17, $19, $21, $23, $25);" >> $sqlFile
-	#tr '\n' ' ' <$i | awk 'BEGIN{authorid=0; RS="<Author>"; FS="<|>"; OFS=",";} {gsub("\'", "\'\'", $5); print $5} { if (NR > 1) print $1,$3,$5,$7,$9,$11,$13,$15,$17,$19,$21,$23, $25;  }' >> $sqlFile
 	tr '\n' ' ' <$i | awk -v table="$table" -v hotel="$hotel_id" -v ovr="$ovr_rating", -v avg="$avg_price", -v url="$url" 'BEGIN{authorid=0; RS="<Author>"; FS="<|>"; OFS=",";} 
 	{gsub("\047", "\047\047", $3);} { if (NR > 1) print "INSERT INTO " table " VALUES (" hotel, ovr avg "\"" url "\"", authorid , "\"" $1 "\"", "\"" $3 "\"", "\"" $5 "\"", $7, $9, $11, $13 ,$15 , $17, $19, $21, $23, $25 ");" ;  } { authorid++;}' >> $sqlFile
 	
