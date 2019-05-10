@@ -5,7 +5,7 @@ table="HotelReviews" # table name
 ARGUMENT=$1 # The target folder
  
 if [ $# = 0 ] || [ -f $ARGUMENT ]; then
-	echo "Usage: ./ex10.sh [directory]" # Define script use
+	echo "Usage: ./parsesql.sh [directory]" # Define script use
 	exit 0
 fi 
 
